@@ -12,9 +12,6 @@
     "lint",
     "test"
   ],
-  "nyc": {
-    "report-dyr": "coverage"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Mateus-Oli/solid-choice.git"

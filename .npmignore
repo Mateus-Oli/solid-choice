@@ -15,5 +15,5 @@ node_modules
 
 # TESTS
 .nyc_output
-spec
+test
 **/*.spec.js
