@@ -1,0 +1,19 @@
+# PACKAGES
+node_modules
+
+# IDE
+.vscode
+
+# CONFIG
+.editorconfig
+.eslintrc
+.gitignore
+.travis.yml
+
+# LOGS
+**/*.log
+
+# TESTS
+.nyc_output
+spec
+**/*.spec.js

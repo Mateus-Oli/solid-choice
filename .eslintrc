@@ -1,0 +1,21 @@
+{
+  "extends": "eslint:recommended",
+  "rules": {
+    "quotes": [
+      "error",
+      "single"
+    ],
+    "eqeqeq": "error",
+    "max-depth": [
+      "error",
+      {
+        "max": 3
+      }
+    ],
+    "semi": "error"
+  },
+  "globals": {
+    "window": true,
+    "module": true
+  }
+}
