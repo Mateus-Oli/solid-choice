@@ -1,7 +1,14 @@
+global.window = {};
+
 const { expect } = require('chai');
 const choose = require('../src');
 
 describe('choose', () => {
+
+  it('injects choose function when window object available', () => {
+    expect(choose).to.be.equal(window.choose);
+    delete global.window;
+  });
 
   it('returns choice function', () => {
     expect(choose()).to.be.a('function');
@@ -58,17 +65,6 @@ describe('choose', () => {
     ])();
   });
 
-  it('injects choose function when window object available', () => {
-    const moduleName = Object.keys(require.cache).find(m => m.match(/solid-choice\\src\\index\.js/));
-    delete require.cache[moduleName];
-
-    global.window = {};
-
-    const choose = require('../src');
-    expect(choose).to.be.equal(window.choose);
-
-    delete global.window;
-  });
 
   it('tests readme exemple', () => {
     const choice = choose([
