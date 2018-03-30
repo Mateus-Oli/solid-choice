@@ -8,7 +8,34 @@
 
 Pattern match execution for JavaScript
 
-## Basic Usage
+1. [Install](#install)
+1. [Import](#import)
+1. [Usage](#usage)
+
+## Install
+```sh
+$ npm i solid-choice
+```
+
+## Import
+
+### Browser
+```html
+<!-- Instaled: --><script src="node_modules/solid-choice/src/index.js"></script>
+<!-- CDN(unpkg): --><script src="https://unpkg.com/solid-choice"></script>
+```
+
+### CommonJS
+```javascript
+const choose = require('solid-choice');
+```
+
+### ES6 Modules
+```javascript
+import choose from 'solid-choice
+```
+
+## Usage
 ```javascript
 import choose from 'solid-choice';
 
