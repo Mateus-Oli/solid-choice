@@ -32,7 +32,7 @@ const choose = require('solid-choice');
 
 ### ES6 Modules
 ```javascript
-import choose from 'solid-choice
+import choose from 'solid-choice';
 ```
 
 ## Usage
