@@ -15,5 +15,6 @@ node_modules
 
 # TESTS
 .nyc_output
+coverage
 test
 **/*.spec.js

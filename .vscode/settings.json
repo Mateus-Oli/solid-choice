@@ -8,6 +8,7 @@
     "**/node_modules": true,
     "**/package-lock.json": true,
     "**/.nyc_output": true,
+    "**/coverage": true,
     "**/.vscode": true
   },
   "eslint.autoFixOnSave": true

@@ -6,4 +6,4 @@ node_modules
 
 # TESTS
 .nyc_output
-
+coverage
