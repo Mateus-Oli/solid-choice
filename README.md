@@ -11,6 +11,7 @@ Pattern match execution for JavaScript
 1. [Install](#install)
 1. [Import](#import)
 1. [Usage](#usage)
+1. [Helper](#helper)
 
 ## Install
 ```sh
@@ -42,11 +43,28 @@ import choose from 'solid-choice';
 const choice = choose([
   [{ object: { value: 'match' } }, object => 'object match'],
   [string => string === 'valid', string => 'validation function match'],
-  [{ valid: v => v === 'valid', str: 'str' }, object => 'multiple type match']
+  [{ valid: v => v === 'valid', str: 'str' }, object => 'multiple type match'],
+  [choose.is(Number), () => 'is match']
 ]);
 
-choice({ object: { value: 'match' } })// 'object match';
-choice('valid')// 'validation function match';
-choice({ valid: 'valid', str: 'str' })// 'multiple type match';
-choice('invalid')// undefined;
+choice({ object: { value: 'match' } }); // 'object match'
+choice('valid'); // 'validation function match'
+choice({ valid: 'valid', str: 'str' }); // 'multiple type match'
+choice('invalid'); // undefined
+choice(3); // 'is match'
+```
+
+## Helper
+```javascript
+// choose.is(Constructor)
+class Constructor {}
+
+choose.is(Number)(3); // true
+choose.is(Constructor)(new Constructor); // true
+
+// choose.is(prototype)
+const prototype = {};
+
+choose.is(Number.prototype)(10); // true
+choose.is(prototype)(Object.create(prototype)); // true
 ```

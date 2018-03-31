@@ -31,6 +31,12 @@ function needDeep(valid, value) {
   return typeof valid === 'object' && typeof value === 'object' && valid !== value && valid !== null && value !== null;
 }
 
+choose.is = function is(constructor) {
+  return typeof constructor === 'function'
+    ? function isInstance(instance) { return Object(instance) instanceof constructor; }
+    : function isPrototype(instance) { return Object.prototype.isPrototypeOf.call(constructor, Object(instance)); };
+};
+
 if (typeof window === 'object') {
   window.choose = choose;
 }

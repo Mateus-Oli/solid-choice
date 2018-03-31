@@ -71,17 +71,33 @@ describe('choose', () => {
     ])();
   });
 
+  describe('choose.it', () => {
 
-  it('tests readme exemple', () => {
-    const choice = choose([
-      [{ object: { value: 'match' } }, () => 'object match'],
-      [string => string === 'valid', () => 'validation function match'],
-      [{ valid: v => v === 'valid', str: 'str' }, () => 'multiple type match']
-    ]);
+    it('checks instance for constructors', () => {
+      class Class { }
 
-    expect(choice({ object: { value: 'match' } })).to.be.equal('object match');
-    expect(choice('valid')).to.be.equal('validation function match');
-    expect(choice({ valid: 'valid', str: 'str' })).to.be.equal('multiple type match');
-    expect(choice('invalid')).to.be.equal(undefined);
+      expect(choose.is(Class)(new Class)).to.be.equal(true);
+      expect(choose.is(Class)({})).to.be.equal(false);
+    });
+
+
+    it('checks prototype for objects', () => {
+      const obj = {};
+
+      expect(choose.is(obj)(Object.create(obj))).to.be.equal(true);
+      expect(choose.is(obj)({})).to.be.equal(false);
+    });
+
+    it('accepts primitives', () => {
+
+      expect(choose.is(Number)(3)).to.be.equal(true);
+      expect(choose.is(Number.prototype)(4)).to.be.equal(true);
+    });
+
+    it('returns false when same', () => {
+      const obj = {};
+
+      expect(choose.is(obj)(obj)).to.be.equal(false);
+    });
   });
 });
