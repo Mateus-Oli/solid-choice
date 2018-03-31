@@ -1,13 +1,14 @@
 {
   "name": "solid-choice",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "pattern match for js",
   "main": "src/index.js",
   "types": "src/index.d.ts",
   "scripts": {
     "lint": "eslint src/**/*.js",
     "coverage": "nyc --reporter=lcov mocha test/**/*.spec.js",
-    "test": "nyc mocha test/**/*.spec.js"
+    "test": "nyc mocha test/**/*.spec.js",
+    "start": "node --inspect=0.0.0.0:5858 src"
   },
   "pre-commit": [
     "lint",

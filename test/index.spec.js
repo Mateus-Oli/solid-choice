@@ -30,6 +30,12 @@ describe('choose', () => {
     expect(choice({ a: { b: 4 } })).to.be.equal(undefined);
   });
 
+  it('does not match any value with empty object', () => {
+    expect(choose([
+      [{ value: {} }, () => 'match']
+    ])({ value: 3 })).to.be.equal(undefined);
+  });
+
   it('executes matching function', () => {
     let executed = false;
 

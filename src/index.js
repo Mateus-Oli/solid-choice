@@ -28,7 +28,7 @@ function matchValue(valid, value) {
 }
 
 function needDeep(valid, value) {
-  return typeof valid === 'object' && valid !== value && value !== null && value !== undefined;
+  return typeof valid === 'object' && typeof value === 'object' && valid !== value && valid !== null && value !== null;
 }
 
 if (typeof window === 'object') {
