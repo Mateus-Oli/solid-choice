@@ -43,8 +43,7 @@ import choose from 'solid-choice';
 const choice = choose([
   [{ object: { value: 'match' } }, object => 'object match'],
   [string => string === 'valid', string => 'validation function match'],
-  [{ valid: v => v === 'valid', str: 'str' }, object => 'multiple type match'],
-  [choose.is(Number), () => 'is match']
+  [{ valid: v => v === 'valid', str: 'str' }, object => 'multiple type match']
 ]);
 
 choice({ object: { value: 'match' } }); // 'object match'
@@ -54,17 +53,19 @@ choice('invalid'); // undefined
 choice(3); // 'is match'
 ```
 
-## Helper
+## Helpers
 ```javascript
-// choose.is(Constructor)
-class Constructor {}
+import choose from 'solid-choice';
 
-choose.is(Number)(3); // true
-choose.is(Constructor)(new Constructor); // true
+const choice = choose([
+  [choose.empty(), () => 'undefined or null'],
+  [choose.is(Number), () => 'number'],
+  [choose.not(choose.is(String)), () => 'not string'],
+  [choose.any(), () => 'any non matched value']
+]);
 
-// choose.is(prototype)
-const prototype = {};
-
-choose.is(Number.prototype)(10); // true
-choose.is(prototype)(Object.create(prototype)); // true
+choice(null);// 'undefined or null'
+choice(3);// 'number'
+choice({});// 'not string'
+choice('str');// 'any non matched value'
 ```
