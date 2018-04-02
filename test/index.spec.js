@@ -71,6 +71,12 @@ describe('choose', () => {
     ])();
   });
 
+  it('returns non function implementation', () => {
+    expect(choose([
+      [() => true, 'match']
+    ])()).to.be.equal('match');
+  });
+
   describe('choose.it', () => {
 
     it('checks instance for constructors', () => {
@@ -98,6 +104,45 @@ describe('choose', () => {
       const obj = {};
 
       expect(choose.is(obj)(obj)).to.be.equal(false);
+    });
+  });
+
+  describe('choose.empty', () => {
+
+    it('returns true for undefined and null', () => {
+      expect(choose.empty()(undefined)).to.equal(true);
+      expect(choose.empty()(null)).to.equal(true);
+    });
+
+    it('returns false for any other value', () => {
+      expect(choose.empty()(0)).to.be.equal(false);
+      expect(choose.empty()(NaN)).to.be.equal(false);
+      expect(choose.empty()(false)).to.be.equal(false);
+      expect(choose.empty()('')).to.be.equal(false);
+
+      expect(choose.empty()(1)).to.be.equal(false);
+      expect(choose.empty()('')).to.be.equal(false);
+      expect(choose.empty()(true)).to.be.equal(false);
+      expect(choose.empty()({})).to.be.equal(false);
+    });
+  });
+
+  describe('choose.any', () => {
+
+    it('returns true', () => {
+      expect(choose.any()()).to.be.equal(true);
+    });
+  });
+
+  describe('choose.not', () => {
+
+    it('negates result of passed function', () => {
+      expect(choose.not(() => true)()).to.be.equal(false);
+      expect(choose.not(() => false)()).to.be.equal(true);
+    });
+
+    it('executes with passed argument', () => {
+      choose.not(x => expect(x).to.be.equal('arg'))('arg');
     });
   });
 });
