@@ -6,14 +6,16 @@ interface Choose {
   is<T>(constructor: new (...args: any[]) => T): (value: any) => value is T;
   is(prototype: object): (value: any) => boolean;
 
-  empty<T>(): (x: T) => boolean;
+  type(type: 'string' | 'number' | 'boolean' | 'object' | 'function' | 'undefined'): (value: any) => boolean;
+
   empty(): (x: null | undefined) => true;
+  empty<T>(): (x: T) => boolean;
 
   any<T>(): (x: T) => true;
 
-  not<T>(f: (x: T) => any): (x: T) => boolean;
   not<T>(f: (x: T) => true): (x: T) => false;
   not<T>(f: (x: T) => false): (x: T) => true;
+  not<T>(f: (x: T) => any): (x: T) => boolean;
 }
 
 declare const choose: Choose;

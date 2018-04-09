@@ -1,7 +1,7 @@
 function choose(entries) {
   return function choice(obj) {
     for (var index in entries) {
-      if (matchObject(entries[index][0], obj)) {
+      if (match(entries[index][0], obj)) {
         return asFunc(entries[index][1])(obj);
       }
     }
@@ -14,6 +14,12 @@ choose.is = function is(constructor) {
     : function isPrototype(instance) { return Object.prototype.isPrototypeOf.call(constructor, Object(instance)); };
 };
 
+choose.type = function type(strType) {
+  return function type(value) {
+    return strType === typeof value;
+  };
+};
+
 choose.empty = function empty() {
   return function empty(value) {
     return value === null || value === undefined;
@@ -21,7 +27,9 @@ choose.empty = function empty() {
 };
 
 choose.any = function any() {
-  return function any() { return true; };
+  return function any() {
+    return true;
+  };
 };
 
 choose.not = function not(func) {
@@ -30,31 +38,51 @@ choose.not = function not(func) {
   };
 };
 
-function matchObject(valid, obj) {
-  if (!needDeep(valid, obj)) {
-    return matchValue(valid, obj);
-  }
-  for (var prop in valid) {
-    if (!matchObject(valid[prop], obj[prop])) {
+choose.and = function and(rules) {
+  return function and(value) {
+    for (var index in rules) {
+      if (!match(rules[index], value)) {
+        return false;
+      }
+    }
+    return true;
+  };
+};
+
+choose.or = function or(rules) {
+  return function and(value) {
+    for (var index in rules) {
+      if (match(rules[index], value)) {
+        return true;
+      }
+    }
+    return false;
+  };
+};
+
+function match(rule, obj) {
+  return needDeep(rule, obj) ? matchObject(rule, obj) : matchValue(rule, obj);
+}
+
+function matchObject(rule, obj) {
+  for (var prop in rule) {
+    if (!match(rule[prop], obj[prop])) {
       return false;
     }
   }
   return true;
 }
 
-function matchValue(valid, value) {
-  if (typeof valid !== 'function' || valid === value) {
-    return valid === value;
-  }
-  return !!valid(value);
+function matchValue(rule, value) {
+  return typeof rule === 'function' ? !!rule(value) : rule === value;
 }
 
-function needDeep(valid, value) {
-  return typeof valid === 'object' && typeof value === 'object' && valid !== value && valid !== null && value !== null;
+function needDeep(rule, value) {
+  return typeof rule === 'object' && typeof value === 'object' && rule !== value && rule !== null && value !== null;
 }
 
 function asFunc(func) {
-  return typeof func === 'function' ? func : function () { return func; };
+  return typeof func === 'function' ? func : function asFunc() { return func; };
 }
 
 if (typeof window === 'object') {

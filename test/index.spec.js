@@ -107,6 +107,18 @@ describe('choose', () => {
     });
   });
 
+  describe('choose.type', () => {
+    it('checks typeof value', () => {
+
+      expect(choose.type('string')('')).to.be.equal(true);
+      expect(choose.type('number')(0)).to.be.equal(true);
+      expect(choose.type('boolean')(false)).to.be.equal(true);
+      expect(choose.type('object')({})).to.be.equal(true);
+      expect(choose.type('function')(() => { })).to.be.equal(true);
+      expect(choose.type('undefined')()).to.be.equal(true);
+    });
+  });
+
   describe('choose.empty', () => {
 
     it('returns true for undefined and null', () => {
@@ -143,6 +155,25 @@ describe('choose', () => {
 
     it('executes with passed argument', () => {
       choose.not(x => expect(x).to.be.equal('arg'))('arg');
+    });
+  });
+
+  describe('choose.and', () => {
+    it('returns true for only valid rules', () => {
+      expect(choose.and([() => true, () => true])()).to.be.equal(true);
+    });
+    it('returns false for at least 1 invalid rule', () => {
+      expect(choose.and([() => true, () => false])()).to.be.equal(false);
+    });
+  });
+
+  describe('choose.or', () => {
+    it('returns true for at least 1 valid rule', () => {
+      expect(choose.or([() => true, () => false])()).to.be.equal(true);
+    });
+
+    it('returns false for only invalid rules', () => {
+      expect(choose.or([() => false, () => false])()).to.be.equal(false);
     });
   });
 });
