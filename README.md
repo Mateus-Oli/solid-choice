@@ -55,17 +55,25 @@ choice(3); // 'is match'
 
 ## Helpers
 ```javascript
-import choose from 'solid-choice';
+import choose, {
+  is,
+  type,
+  empty,
+  any,
+  not,
+  and,
+  or
+} from 'solid-choice';
 
 const choice = choose([
-  [choose.empty(), () => 'undefined or null'],
-  [choose.is(Number), () => 'number'],
-  [choose.not(choose.is(String)), () => 'not string'],
-  [choose.any(), () => 'any non matched value']
+  [ or([ is(Number), is(String) ]), () => 'is number or string' ],
+  [ and([ type('object'), empty() ]), () => 'is null' ],
+  [ not(type('function')), () => 'not function' ],
+  [ any(), () => 'any non matched value' ]
 ]);
 
-choice(null);// 'undefined or null'
-choice(3);// 'number'
-choice({});// 'not string'
-choice('str');// 'any non matched value'
+choice(1);// 'is number or string'
+choice(null);// 'is null'
+choice({});// 'not function'
+choice(() => {});// 'any non matched value'
 ```
