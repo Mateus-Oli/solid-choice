@@ -1,21 +1,29 @@
-type match<T> = ((value: T) => any) | {[k in keyof T]: match<T[k]> } | T;
+type match<T> = ((value: T) => any) | { [k in keyof T]: match<T[k]> } | T;
 
 interface Choose {
   <T, R = any>(entries: [match<T>, (value: T) => R][]): (value: T) => R;
+  <T, R = any>(entries: [match<T>, (value: T, ...args: any[]) => R][]): (value: T, ...args: any[]) => R;
 
   is<T>(constructor: new (...args: any[]) => T): (value: any) => value is T;
   is(prototype: object): (value: any) => boolean;
 
-  type(type: 'string' | 'number' | 'boolean' | 'object' | 'function' | 'undefined'): (value: any) => boolean;
+  type(type: 'string'): (value: any) => value is string;
+  type(type: 'number'): (value: any) => value is number;
+  type(type: 'boolean'): (value: any) => value is boolean;
+  type(type: 'object'): (value: any) => value is { [k: string]: any };
+  type(type: 'function'): (value: any) => value is ((...args: any[]) => any);
+  type(type: 'undefined'): (value: any) => value is undefined;
 
-  empty(): (x: null | undefined) => true;
-  empty<T>(): (x: T) => boolean;
+  empty(): (value: any) => value is undefined | null;
 
-  any<T>(): (x: T) => true;
+  any(): (value: any) => true;
 
-  not<T>(f: (x: T) => true): (x: T) => false;
-  not<T>(f: (x: T) => false): (x: T) => true;
-  not<T>(f: (x: T) => any): (x: T) => boolean;
+  not<T>(f: (value: T) => true): (value: T) => false;
+  not<T>(f: (value: T) => false): (value: T) => true;
+  not<T>(f: (value: T) => any): (value: T) => boolean;
+
+  and<T>(rules: ((value: T) => any)[]): (value: T) => boolean;
+  or<T>(rules: ((value: T) => any)[]): (value: T) => boolean;
 }
 
 declare const choose: Choose;

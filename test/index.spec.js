@@ -1,13 +1,17 @@
-global.window = {};
-
 const { expect } = require('chai');
 const choose = require('../src');
 
 describe('choose', () => {
 
-  it('injects choose function when window object available', () => {
-    expect(choose).to.be.equal(window.choose);
-    delete global.window;
+  it('injects only "choose" on window object when available', () => {
+    global.window = {};
+    delete require.cache[require.resolve('../src')];
+
+    const required = require('../src');
+
+    expect(window.choose).to.be.a('function');
+    expect(required).to.not.be.a('function');
+    expect(Object.keys(window).length).to.be.equal(1);
   });
 
   it('returns choice function', () => {
@@ -75,6 +79,18 @@ describe('choose', () => {
     expect(choose([
       [() => true, 'match']
     ])()).to.be.equal('match');
+  });
+
+  it('accepts rest of arguments', () => {
+    const choice = choose([[() => true, (x, y, z, other) => {
+      expect(x).to.be.equal(1);
+      expect(y).to.be.equal(2);
+      expect(z).to.be.equal(3);
+
+      expect(other).to.be.equal(undefined);
+    }]]);
+
+    choice(1, 2, 3);
   });
 
   describe('choose.it', () => {

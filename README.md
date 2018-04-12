@@ -11,7 +11,7 @@ Pattern match execution for JavaScript
 1. [Install](#install)
 1. [Import](#import)
 1. [Usage](#usage)
-1. [Helper](#helper)
+1. [Helpers](#helpers)
 
 ## Install
 ```sh
@@ -24,6 +24,9 @@ $ npm i solid-choice
 ```html
 <!-- Instaled: --><script src="node_modules/solid-choice/src/index.js"></script>
 <!-- CDN(unpkg): --><script src="https://unpkg.com/solid-choice"></script>
+<script>
+  choose([]);
+</script>
 ```
 
 ### CommonJS
