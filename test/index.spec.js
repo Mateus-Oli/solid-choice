@@ -93,7 +93,7 @@ describe('choose', () => {
     choice(1, 2, 3);
   });
 
-  describe('choose.it', () => {
+  describe('choose.is', () => {
 
     it('checks instance for constructors', () => {
       class Class { }
@@ -190,6 +190,28 @@ describe('choose', () => {
 
     it('returns false for only invalid rules', () => {
       expect(choose.or([() => false, () => false])()).to.be.equal(false);
+    });
+  });
+
+  describe('choose([]).where', () => {
+
+    it('adds new condition', () => {
+      const choice = choose([]);
+      choice.where({ fromWhere: true }, () => 'fromWhere');
+
+      expect(choice({ fromWhere: true })).to.be.equal('fromWhere');
+    });
+
+    it('adds new condition at the end', () => {
+      const choice = choose([[ choose.any(), () => 'notFromWhere' ]]);
+      choice.where(choose.any(), () => 'fromWhere');
+
+      expect(choice()).to.be.equal('notFromWhere');
+    });
+
+    it('returns original choice function', () => {
+      const choice = choose([]);
+      expect(choice.where()).to.be.equal(choice);
     });
   });
 });

@@ -12,6 +12,7 @@ Pattern match execution for JavaScript
 1. [Import](#import)
 1. [Usage](#usage)
 1. [Helpers](#helpers)
+1. [Where](#where)
 
 ## Install
 ```sh
@@ -79,4 +80,14 @@ choice(1);// 'is number or string'
 choice(null);// 'is null'
 choice({});// 'not function'
 choice(() => {});// 'any non matched value'
+```
+
+## Where
+```javascript
+import choose from 'solid-choice';
+
+const choice = choose([]);
+choice.where({ fromWhere: true }, () => 'fromWhere');
+
+choice({ fromWhere: true });// 'fromWhere'
 ```

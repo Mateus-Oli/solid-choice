@@ -4,9 +4,16 @@
   exports('choose', choose);
 
   function choose(entries) {
-    return function choice(obj) {
+    function choice(obj) {
       return findMatch(entries, obj).apply(this, arguments);
+    }
+
+    choice.where = function(valid, value) {
+      entries.push([ valid, value ]);
+      return choice;
     };
+
+    return choice;
   }
 
   choose.is = function is(constructor) {

@@ -1,8 +1,16 @@
 type match<T> = ((value: T) => any) | { [k in keyof T]: match<T[k]> } | T;
 
+interface Choice<T, R> {
+
+  (value: T): R;
+  (value: T, ...args: any[]): R;
+
+  where(valid: match<T>, choice: (value: T) => R): Choice<T, R>;
+}
+
 interface Choose {
-  <T, R = any>(entries: [match<T>, (value: T) => R][]): (value: T) => R;
-  <T, R = any>(entries: [match<T>, (value: T, ...args: any[]) => R][]): (value: T, ...args: any[]) => R;
+
+  <T, R = any>(entries: [match<T>, (value: T, ...args: any[]) => R][]): Choice<T, R>;
 
   is<T>(constructor: new (...args: any[]) => T): (value: any) => value is T;
   is(prototype: object): (value: any) => boolean;
