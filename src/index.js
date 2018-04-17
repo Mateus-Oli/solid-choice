@@ -41,8 +41,8 @@
 
   choose.and = function and(rules) {
     return function and(value) {
-      for (var index in rules) {
-        if (!match(rules[index], value)) {
+      for (var i = 0; i < rules.length; i++) {
+        if (!match(rules[i], value)) {
           return false;
         }
       }
@@ -52,8 +52,8 @@
 
   choose.or = function or(rules) {
     return function and(value) {
-      for (var index in rules) {
-        if (match(rules[index], value)) {
+      for (var i = 0; i < rules.length; i++) {
+        if (match(rules[i], value)) {
           return true;
         }
       }
