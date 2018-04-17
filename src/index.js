@@ -1,15 +1,11 @@
-'use strict';
-(function (externalize) {
+(function (exports) {
+  'use strict';
 
-  externalize(choose);
+  exports('choose', choose);
 
   function choose(entries) {
     return function choice(obj) {
-      for (var index in entries) {
-        if (match(entries[index][0], obj)) {
-          return asFunc(entries[index][1]).apply(this, Array.prototype.slice.call(arguments));
-        }
-      }
+      return findMatch(entries, obj).apply(this, arguments);
     };
   }
 
@@ -65,6 +61,15 @@
     };
   };
 
+  function findMatch(arr, value) {
+    for (var i = 0; i < arr.length; i++) {
+      if (match(arr[i][0], value)) {
+        return func(arr[i][1]);
+      }
+    }
+    return Function.prototype;
+  }
+
   function match(rule, obj) {
     return needDeep(rule, obj) ? matchObject(rule, obj) : matchValue(rule, obj);
   }
@@ -86,12 +91,12 @@
     return typeof rule === 'object' && typeof value === 'object' && rule !== value && rule !== null && value !== null;
   }
 
-  function asFunc(func) {
-    return typeof func === 'function' ? func : function asFunc() { return func; };
+  function func(f) {
+    return typeof f === 'function' ? f : function() { return f; };
   }
 
-})(function (func) {
+})(function exports(key, value) {
   return typeof window !== 'undefined'
-    ? (window[func.name] = func)
-    : (module.exports = func);
+    ? (window[key] = value)
+    : (module.exports = value);
 });
