@@ -49,14 +49,14 @@
   choose.and = function and(rules) {
     return function and(value) {
       return Object.keys(rules)
-        .every(function(key) { return match(rules[key], value); });
+        .every(function and(key) { return match(rules[key], value); });
     };
   };
 
   choose.or = function or(rules) {
     return function and(value) {
       return Object.keys(rules)
-        .some(function(key) { return match(rules[key], value); });
+        .some(function or(key) { return match(rules[key], value); });
     };
   };
 
@@ -76,7 +76,7 @@
   function matchObject(rule, obj) {
     return Object
       .keys(rule)
-      .every(function(key) { return match(rule[key], obj[key]); });
+      .every(function matchProp(key) { return match(rule[key], obj[key]); });
   }
 
   function matchValue(rule, value) {
@@ -88,7 +88,7 @@
   }
 
   function func(f) {
-    return typeof f === 'function' ? f : function() { return f; };
+    return typeof f === 'function' ? f : function func() { return f; };
   }
 
 })(function exports(key, value) {
