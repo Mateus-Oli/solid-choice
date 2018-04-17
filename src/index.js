@@ -41,23 +41,15 @@
 
   choose.and = function and(rules) {
     return function and(value) {
-      for (var i = 0; i < rules.length; i++) {
-        if (!match(rules[i], value)) {
-          return false;
-        }
-      }
-      return true;
+      return Object.keys(rules)
+        .every(function(key) { return match(rules[key], value); });
     };
   };
 
   choose.or = function or(rules) {
     return function and(value) {
-      for (var i = 0; i < rules.length; i++) {
-        if (match(rules[i], value)) {
-          return true;
-        }
-      }
-      return false;
+      return Object.keys(rules)
+        .some(function(key) { return match(rules[key], value); });
     };
   };
 
@@ -75,12 +67,9 @@
   }
 
   function matchObject(rule, obj) {
-    for (var prop in rule) {
-      if (!match(rule[prop], obj[prop])) {
-        return false;
-      }
-    }
-    return true;
+    return Object
+      .keys(rule)
+      .every(function(key) { return match(rule[key], obj[key]); });
   }
 
   function matchValue(rule, value) {
