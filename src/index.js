@@ -23,42 +23,32 @@
   };
 
   choose.type = function type(strType) {
-    return function type(value) {
-      return strType === typeof value;
-    };
+    return function type(value) { return strType === typeof value; };
   };
 
   choose.empty = function empty() {
-    return function empty(value) {
-      return value === null || value === undefined;
-    };
+    return function empty(value) { return value === null || value === undefined; };
   };
 
   choose.any = function any() {
-    return function any() {
-      return true;
-    };
+    return function any() { return true; };
   };
 
   choose.not = function not(func) {
-    return function not(value) {
-      return !func(value);
-    };
+    return function not(value) { return !func(value); };
   };
 
   choose.and = function and(rules) {
-    return function and(value) {
-      return Object.keys(rules)
-        .every(function and(key) { return match(rules[key], value); });
-    };
+    return function and(value) { return rules.every(prepareValue(value)); };
   };
 
   choose.or = function or(rules) {
-    return function and(value) {
-      return Object.keys(rules)
-        .some(function or(key) { return match(rules[key], value); });
-    };
+    return function or(value) { return rules.some(prepareValue(value)); };
   };
+
+  function prepareValue(value) {
+    return function matchRule(rule) { return match(rule, value); };
+  }
 
   function findMatch(arr, value) {
     for (var i = 0; i < arr.length; i++) {
