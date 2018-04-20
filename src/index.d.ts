@@ -5,7 +5,8 @@ interface Choice<T, R> {
   (value: T): R;
   (value: T, ...args: any[]): R;
 
-  where(valid: match<T>, choice: (value: T) => R): Choice<T, R>;
+  def(lastChoice: (value: T, ...args: any[]) => R): Choice<T, R>;
+  where(valid: match<T>, choice: (value: T, ...args: any[]) => R): Choice<T, R>;
 }
 
 interface Choose {

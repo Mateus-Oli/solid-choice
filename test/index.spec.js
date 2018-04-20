@@ -16,12 +16,16 @@ describe('choose', () => {
     expect(Object.keys(window).length).to.be.equal(1);
   });
 
+  it('receives itself on name', () => {
+    expect(choose).to.be.equal(choose.choose);
+  });
+
   it('returns choice function', () => {
     expect(choose()).to.be.a('function');
   });
 
   it('returns undefined when no match', () => {
-    expect(choose([])()).to.be.equal(undefined);
+    expect(choose()()).to.be.equal(undefined);
   });
 
   it('matchs value when not a function', () => {
@@ -195,7 +199,7 @@ describe('choose', () => {
     });
   });
 
-  describe('choose([]).where', () => {
+  describe('choose().where', () => {
 
     it('adds new condition', () => {
       const choice = choose([]);
@@ -214,6 +218,37 @@ describe('choose', () => {
     it('returns original choice function', () => {
       const choice = choose([]);
       expect(choice.where()).to.be.equal(choice);
+    });
+  });
+
+  describe('choose().def', () => {
+
+    it('executes as last choice', () => {
+      const choice = choose();
+      let executed = false;
+
+      choice.def(() => executed = true);
+
+      expect(choice()).to.be.equal(true);
+      expect(executed).to.be.equal(true);
+    });
+
+    it('receives arguments', () => {
+      const choice = choose();
+
+      choice.def((x, y, z) => {
+        expect(x).to.be.equal(1);
+        expect(y).to.be.equal(2);
+        expect(z).to.be.equal(3);
+      });
+
+      choice(1, 2, 3);
+    });
+
+    it('returns original choice function', () => {
+
+      const choice = choose();
+      expect(choice.def()).to.be.equal(choice);
     });
   });
 });

@@ -53,8 +53,8 @@ const choice = choose([
 choice({ object: { value: 'match' } }); // 'object match'
 choice('valid'); // 'validation function match'
 choice({ valid: 'valid', str: 'str' }); // 'multiple type match'
-choice('invalid'); // undefined
 choice(3); // 'is match'
+choice('invalid'); // undefined
 ```
 
 ## Helpers
@@ -86,8 +86,20 @@ choice(() => {});// 'any non matched value'
 ```javascript
 import choose from 'solid-choice';
 
-const choice = choose([]);
-choice.where({ fromWhere: true }, () => 'fromWhere');
+const choice = choose();
+choice.where({ fromWhere: true }, () => 'from where');
 
-choice({ fromWhere: true });// 'fromWhere'
+choice({ fromWhere: true });// 'from where'
+```
+
+## Default
+```javascript
+import choose, { is } from 'solid-choice';
+
+const choice = choose([ [is(Number), () => 'is number'] ]);
+
+choice.def(() => 'last resource');
+
+choice(3);// 'is number'
+choice('');// 'last resource'
 ```

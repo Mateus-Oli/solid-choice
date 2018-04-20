@@ -3,13 +3,20 @@
 
   exports('choose', choose);
 
-  function choose(entries) {
+  function choose(_entries, last) {
+    var entries = _entries || [];
+
     function choice(obj) {
-      return findMatch(entries, obj).apply(this, arguments);
+      return findMatch(entries, obj, last).apply(this, arguments);
     }
 
-    choice.where = function(valid, value) {
+    choice.where = function where(valid, value) {
       entries.push([ valid, value ]);
+      return choice;
+    };
+
+    choice.def = function def(f) {
+      last = f;
       return choice;
     };
 
@@ -50,13 +57,13 @@
     return function matchRule(rule) { return match(rule, value); };
   }
 
-  function findMatch(arr, value) {
+  function findMatch(arr, value, def) {
     for (var i = 0; i < arr.length; i++) {
       if (match(arr[i][0], value)) {
         return func(arr[i][1]);
       }
     }
-    return Function.prototype;
+    return func(def);
   }
 
   function match(rule, obj) {
@@ -81,8 +88,10 @@
     return typeof f === 'function' ? f : function func() { return f; };
   }
 
-})(function exports(key, value) {
+})(function exports(name, package) {
+  package[name] = package;
+
   return typeof window !== 'undefined'
-    ? (window[key] = value)
-    : (module.exports = value);
+    ? (window[name] = package)
+    : (module.exports = package);
 });
