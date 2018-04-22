@@ -5,14 +5,13 @@ const choose = require('../src');
 
 describe('choose', () => {
 
-  it('injects only "choose" on window object when available', () => {
+  it('injects "choose" on window object when available', () => {
     global.window = {};
     delete require.cache[require.resolve('../src')];
 
-    const required = require('../src');
+    require('../src');
 
     expect(window.choose).to.be.a('function');
-    expect(required).to.not.be.a('function');
     expect(Object.keys(window).length).to.be.equal(1);
   });
 

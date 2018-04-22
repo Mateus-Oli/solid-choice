@@ -1,6 +1,6 @@
-(function (exports) {
-  'use strict';
+'use strict';
 
+(function main(exports) {
   exports('choose', choose);
 
   function choose(_entries, last) {
@@ -88,10 +88,8 @@
     return typeof f === 'function' ? f : function func() { return f; };
   }
 
-})(function exports(name, package) {
-  package[name] = package;
-
-  return typeof window !== 'undefined'
-    ? (window[name] = package)
-    : (module.exports = package);
+})(function exports(name, pack) {
+  pack[name] = pack;
+  (typeof window !== 'undefined') && (window[name] = pack);
+  (typeof module !== 'undefined') && (module.exports = pack);
 });
