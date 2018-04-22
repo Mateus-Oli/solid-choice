@@ -1,6 +1,6 @@
 {
   "name": "solid-choice",
-  "version": "1.3.2",
+  "version": "1.3.3",
   "description": "pattern match for js",
   "main": "src/index.js",
   "types": "src/index.d.ts",

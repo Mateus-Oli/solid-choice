@@ -1,6 +1,6 @@
 'use strict';
 
-(function main(exports) {
+(function (exports) {
   exports('choose', choose);
 
   function choose(_entries, last) {
